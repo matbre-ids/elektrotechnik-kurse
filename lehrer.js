@@ -144,6 +144,10 @@
       '(Umrechnung, Zwischenschritte, Ergebnis mit Einheit) und gibst am Bildschirm nur das Ergebnis ein. Das Blatt wird am Ende abgegeben.' +
       '<span class="ohne-qr">Ohne QR-Code: ' + ET.esc(basis) + ' öffnen, Blatt-Nr. und Zugangscode eingeben.</span></div>' +
       stationen +
+      '<div class="feedback-box">' +
+      '<div class="fb-zeile"><b>Feedback zum Kurs:</b> Wie hilfreich war der Kurs? <span class="fb-skala">gar nicht <span class="kasten">1</span><span class="kasten">2</span><span class="kasten">3</span><span class="kasten">4</span><span class="kasten">5</span> sehr</span></div>' +
+      '<div class="fb-zeile">Was war gut, was sollte verbessert werden? <span class="fb-linie"></span></div>' +
+      '<div class="fb-zeile"><span class="fb-linie"></span></div></div>' +
       '<div class="abschluss">' +
       '<div class="abschluss-titel">Abschlusscode<span>(vom grünen Abschlussbildschirm übertragen)</span></div>' +
       '<div class="code-kaesten">' + '<span></span><span></span><span></span><span></span><b>–</b><span></span><span></span><span></span><span></span>' + '</div>' +

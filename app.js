@@ -554,6 +554,7 @@
       if (aktCheck().bestanden) return abschluss();
       return { typ: 'checkStart' };
     }
+    if (S.phase === 'feedback') return abschluss();
     return { typ: 'fertig' };
   }
 
@@ -566,6 +567,8 @@
       S.lastRep = false;
     } else if (sc.typ === 'wdh') {
       S.lastRep = true;
+    } else if (sc.typ === 'feedback') {
+      S.feedbackFertig = true;
     }
     S.zaehler++;
     S.screen = naechster();
@@ -625,6 +628,7 @@
 
   function abschluss() {
     if (bedingungen().length) return { typ: 'checkErgebnis' };
+    if (!S.feedbackFertig) { S.phase = 'feedback'; return { typ: 'feedback' }; }
     if (!S.code) {
       S.code = ET.Abschlusscode.encode(kurs.id, {
         id: parseInt(BLATT, 10), erster: S.ersterCheck, letzter: S.letzterCheck, wiederholungen: S.stat.wiederholungen
@@ -705,6 +709,7 @@
     else if (sc.typ === 'checkStart') renderCheckStart(main);
     else if (sc.typ === 'check') renderCheck(main, sc);
     else if (sc.typ === 'checkErgebnis') renderCheckErgebnis(main);
+    else if (sc.typ === 'feedback') renderFeedback(main);
     leiternFuellen(main);
   }
 
@@ -826,12 +831,34 @@
     main.appendChild(leiste);
   }
 
+  /* Feedback: Frage am Bildschirm, Antwort auf dem Arbeitsblatt (Daten verlassen den Browser nicht) */
+  function renderFeedback(main) {
+    main.appendChild(el('div', 'badge papier', '📝 Feedback'));
+    main.appendChild(el('h2', null, 'Fast fertig – dein Feedback zum Kurs'));
+    main.appendChild(el('div', 'erklaerung',
+      '<p>Nimm dein Arbeitsblatt und fülle unten das Feld <b>„Feedback“</b> aus:</p>' +
+      '<ol class="feedback-fragen"><li><b>Wie hilfreich fandest du den Kurs?</b><br>Kreuze an: 1 = gar nicht … 5 = sehr hilfreich.</li>' +
+      '<li><b>Was war gut – und was sollte verbessert werden?</b><br>Schreib ein bis zwei Sätze.</li></ol>' +
+      '<p class="klein grau">Dein Feedback hilft, den Kurs zu verbessern. Es fließt nicht in die Bewertung ein.</p>'));
+    var lab = el('label', 'papierhaken');
+    var haken = el('input');
+    haken.type = 'checkbox';
+    lab.appendChild(haken);
+    lab.appendChild(el('span', null, 'Ich habe mein Feedback auf das Arbeitsblatt geschrieben.'));
+    main.appendChild(lab);
+    var leiste = el('div', 'weiter-leiste');
+    var b = btn('Zum Abschluss', 'btn primaer gross', weiter);
+    b.disabled = true;
+    haken.addEventListener('change', function () { b.disabled = !haken.checked; });
+    leiste.appendChild(b);
+    main.appendChild(leiste);
+  }
+
   function renderFertig() {
     var f = bedingungen();
     if (f.length) { /* Sicherheitsnetz: grüner Bildschirm nur, wenn wirklich alles erfüllt ist */
       S.phase = 'lernen'; S.screen = naechster(); speichern(); render(); return;
     }
-    var url = new URL('pruefen.html?code=' + encodeURIComponent(S.code), location.href).href;
     var pz = kurs.papier.length;
     var w = el('main', 'erfolg');
     w.innerHTML =
@@ -848,7 +875,7 @@
       '<div class="code-titel">Abschlusscode</div>' +
       '<div class="code" aria-label="Abschlusscode">' + S.code + '</div>' +
       '<p class="erfolg-text">Übertrage den Abschlusscode auf dein Arbeitsblatt und zeige diesen Bildschirm anschließend deiner Lehrkraft.</p>' +
-      '<div class="erfolg-qr"><div class="qr">' + QR.svg(url, { ecl: 'M' }) + '</div><div class="klein">QR-Code für die Lehrkraft (Prüfseite)</div></div>';
+      '';
     var u = el('div', 'erfolg-unten');
     u.appendChild(btn('Übersicht', 'btn hell', zeigeUebersicht));
     w.appendChild(u);

@@ -80,10 +80,18 @@ table.liste td.link { font-size: 0.8rem; word-break: break-all; }
 .kontrolle { font-size: 8.5pt; margin-left: auto; }
 .blatt-fuss { font-size: 7pt; color: #444; text-align: right; margin-top: 1.5mm; }
 
+/* Feedback-Feld */
+.feedback-box { border: 0.35mm solid #000; border-radius: 1.5mm; margin-top: 1.8mm; padding: 0.8mm 2.5mm 1.6mm; }
+.fb-titel { font-weight: 700; margin-bottom: 0.8mm; }
+.fb-zeile { display: flex; align-items: flex-end; gap: 2mm; font-size: 9.5pt; margin-top: 0.8mm; }
+.fb-skala { display: inline-flex; align-items: center; gap: 1.5mm; margin-left: auto; font-size: 8.5pt; }
+.fb-skala .kasten { width: 5.5mm; height: 5.5mm; border: 0.3mm solid #000; display: inline-flex; align-items: center; justify-content: center; font-size: 7pt; }
+.fb-linie { flex: 1; border-bottom: 0.3mm solid #000; height: 6mm; }
+
 /* Station „Verbinden“ */
 .verbinden { display: flex; justify-content: space-between; margin: 1.5mm 6mm 0.5mm; }
-.vb-spalte { display: flex; flex-direction: column; justify-content: space-around; gap: 1.2mm; }
-.vb-item { display: flex; align-items: center; gap: 2.5mm; font-size: 10.5pt; min-height: 5.6mm; }
+.vb-spalte { display: flex; flex-direction: column; justify-content: space-around; gap: 0.4mm; }
+.vb-item { display: flex; align-items: center; gap: 2.5mm; font-size: 10.5pt; min-height: 5.2mm; }
 .vb-spalte.links .vb-item { justify-content: flex-end; }
 .punkt { width: 2.4mm; height: 2.4mm; border-radius: 50%; background: #000; display: inline-block; flex: none;
   -webkit-print-color-adjust: exact; print-color-adjust: exact; }

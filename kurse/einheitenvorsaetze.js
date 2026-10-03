@@ -521,11 +521,11 @@
 
   /* ---------- Papierstationen (gleiche Aufgabe auf Blatt und Bildschirm) ---------- */
   var papier = [
-    { id: 'P1', nr: 1, titel: 'Einfache Umrechnung', gen: 'p_einfach', platz: 18 },
+    { id: 'P1', nr: 1, titel: 'Einfache Umrechnung', gen: 'p_einfach', platz: 12 },
     { id: 'P2', nr: 2, titel: 'Vorsatzleiter', gen: 'p_leiter', platz: 0 },
     { id: 'P3', nr: 3, titel: 'Gleiche Werte verbinden', gen: 'p_verbinden', platz: 0 },
-    { id: 'P4', nr: 4, titel: 'Zehnerpotenz und Taschenrechner', gen: 'p_potenz', platz: 14 },
-    { id: 'P5', nr: 5, titel: 'Abschlussaufgabe: U = R · I', gen: 'p_ohm', platz: 26 }
+    { id: 'P4', nr: 4, titel: 'Zehnerpotenz und Taschenrechner', gen: 'p_potenz', platz: 11 },
+    { id: 'P5', nr: 5, titel: 'Abschlussaufgabe: U = R · I', gen: 'p_ohm', platz: 17 }
   ];
 
   /* ---------- Lernschritte (7, davon 5 mit Papierstation) ---------- */

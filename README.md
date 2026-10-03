@@ -99,9 +99,8 @@ Ohne QR-Scanner öffnen die Schüler die Kursadresse und geben Blatt-Nr. und Zug
 
 ## 7. Abschlusscodes prüfen
 
-Am Ende sieht der Schüler einen Code im Format `XXXX-XXXX`, zum Beispiel `K7M4-8R3X`. Er überträgt ihn auf sein Blatt. Zusätzlich gibt es einen QR-Code, der `pruefen.html?code=…` öffnet.
-
-Auf `pruefen.html` den Code eingeben oder den QR-Code mit dem Smartphone scannen. Die Seite zeigt:
+Am Ende sieht der Schüler einen Code im Format `XXXX-XXXX`, zum Beispiel `K7M4-8R3X`. Er überträgt ihn auf sein Blatt. 
+Auf `pruefen.html` den Code eingeben. Auf den Schülerseiten gibt es keinen Link zur Prüfseite. Die Seite zeigt:
 Kurs, Arbeitsblatt-ID, ersten Kompetenzcheck, erfolgreichen Abschlusscheck, Wiederholungsaufgaben, Papierstationen, Status und Zufallskennung.
 
 - **Abgleich mit dem Papierblatt:** Die Blatt-Nr. vom Arbeitsblatt in das zweite Feld eintragen. Die Seite meldet, ob der Code zu diesem Blatt gehört.
@@ -110,6 +109,25 @@ Kurs, Arbeitsblatt-ID, ersten Kompetenzcheck, erfolgreichen Abschlusscheck, Wied
 
 Aufbau des Codes (40 Bit, Alphabet `23456789ABCDEFGHJKLMNPQRSTUVWXYZ`):
 Blatt-ID (10 Bit) · erster Check in 10er-Schritten (4 Bit) · letzter Check 80/90/100 % (2 Bit) · Wiederholungen 0–31 (5 Bit) · Zufallsanteil 0–9999 (14 Bit, `crypto.getRandomValues`) · Prüfsumme (5 Bit). Alles wird kursabhängig verwürfelt. Der Code ist ein Plausibilitätsnachweis, keine kryptografische Signatur: Wer den Quelltext kennt, könnte Codes nachbauen.
+
+## Passwortschutz der Lehrerseiten
+
+`lehrer.html` und `pruefen.html` fragen beim Öffnen nach einem Passwort. Die Freigabe gilt, bis der Browser-Tab geschlossen wird.
+Das Passwort steht nicht im Klartext im Code, sondern nur als PBKDF2-Prüfwert in `lib/zugang.js`.
+
+**Grenzen:** Auf GitHub Pages gibt es keinen Server. Die Sperre hält Schüler zuverlässig fern, wer aber gezielt den öffentlichen Quelltext untersucht, kann sie umgehen. Auf den Lehrerseiten sind keine Schülerdaten gespeichert, deshalb ist das hier vertretbar.
+
+**Passwort ändern:**
+1. Lehrerseite öffnen und entsperren.
+2. Mit F12 die Browserkonsole öffnen und eingeben:
+   ```js
+   await ET.Zugang.neuerPruefwert('neues Passwort')
+   ```
+3. Die drei ausgegebenen Zeilen (`salz`, `runden`, `pruefwert`) in `lib/zugang.js` im Block `ZUGANG` ersetzen, dann hochladen.
+
+## Feedback der Schüler
+
+Nach dem bestandenen Kompetenzcheck und vor dem grünen Abschluss fragt der Kurs nach Feedback: „Wie hilfreich war der Kurs? (1–5)“ und „Was war gut, was sollte verbessert werden?“. Beantwortet wird auf dem Arbeitsblatt im Feld „Feedback zum Kurs“. Die Schüler bestätigen das per Häkchen; erst dann erscheint der Abschlussbildschirm. Am Bildschirm wird nichts gespeichert oder übertragen.
 
 ## 8. Aufgaben ändern oder ergänzen
 

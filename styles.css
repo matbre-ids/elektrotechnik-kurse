@@ -258,3 +258,12 @@ body.erfolg-modus { background: #147a3c; }
 details.karte summary { cursor: pointer; min-height: 32px; }
 .datei-btn { display: inline-flex; align-items: center; }
 .datei-btn input { display: none; }
+
+/* Passwortsperre (Lehrerseiten) */
+html.gesperrt body > *:not(.zugang) { display: none !important; }
+.zugang { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 16px; background: var(--bg); }
+.zugang-box { background: #fff; border-radius: var(--radius); padding: 24px; width: 100%; max-width: 380px; box-shadow: 0 1px 3px rgba(16, 24, 40, .12); }
+.zugang-box h1 { font-size: 1.4rem; }
+.zugang-pw { display: block; width: 100%; font: inherit; font-size: 1.2rem; min-height: 52px; padding: 8px 12px; margin: 8px 0 14px; border: 2px solid #9aa6b4; border-radius: 10px; }
+.zugang-meldung { color: var(--falsch); font-weight: 600; min-height: 1.4em; margin-top: 8px; }
+@media print { html.gesperrt body > * { display: none !important; } }
