@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <meta name="robots" content="noindex">
+  <title>Lehrerwerkzeug – Arbeitsblätter erzeugen</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="arbeitsblatt.css">
+</head>
+<body class="lehrer">
+  <div class="no-print lehrer-ui">
+    <header class="lehrer-kopf">
+      <h1>Arbeitsblätter erzeugen</h1>
+      <p>Alles läuft nur in diesem Browser. Namen werden nirgendwohin übertragen und erscheinen nur auf dem Ausdruck – nicht in den QR-Codes.</p>
+    </header>
+
+    <section class="karte">
+      <h2>1. Kurs und Klasse</h2>
+      <label class="feld">Kurs
+        <select id="kurs" class="auswahl"></select>
+      </label>
+      <div class="klein grau" id="kurs-info"></div>
+      <div class="zwei-spalten">
+        <label class="feld">Klasse / Bezeichnung<input id="klasse" placeholder="z. B. E1A"></label>
+        <label class="feld">Datum (optional)<input id="datum" type="date"></label>
+      </div>
+      <label class="feld">Adresse des Schülerkurses (für die QR-Codes)
+        <input id="basis" spellcheck="false">
+      </label>
+      <div id="basis-hinweis" class="klein"></div>
+    </section>
+
+    <section class="karte">
+      <h2>2. Namensliste</h2>
+      <p class="klein">Ein Name pro Zeile – oder mit Nummer: <code>001;Anna Müller</code>. CSV-Dateien mit Semikolon, Komma oder Tabulator gehen auch.
+        Eine gespeicherte Liste (Nr;Name;Code) übernimmt die bisherigen Zugangscodes – so lassen sich Blätter identisch nachdrucken.</p>
+      <textarea id="namen" rows="8" placeholder="Anna Müller&#10;Ben Schneider&#10;Cem Yilmaz"></textarea>
+      <div class="zeile-knoepfe">
+        <label class="btn datei-btn">CSV-Datei laden<input id="datei" type="file" accept=".csv,.txt,text/csv,text/plain"></label>
+        <label class="feld inline">Erste Blatt-Nr. (ohne eigene Nummern)<input id="start" type="number" min="1" max="999" value="1"></label>
+      </div>
+      <button class="btn primaer gross" id="erzeugen" type="button">Blätter erzeugen</button>
+      <div id="meldungen"></div>
+    </section>
+
+    <section class="karte" id="ergebnis" hidden>
+      <h2>3. Prüfen, speichern, drucken</h2>
+      <div class="zeile-knoepfe">
+        <button class="btn primaer" id="drucken" type="button">🖨 Alle Blätter drucken</button>
+        <button class="btn" id="liste-drucken" type="button">Klassenliste drucken</button>
+        <button class="btn" id="csv" type="button">Liste mit Codes speichern (CSV)</button>
+      </div>
+      <p class="klein grau">Tipp: Die CSV-Liste aufbewahren. Sie ordnet Blatt-Nr. und Namen zu und kann auf der Prüfseite geladen werden. Beim Drucken „Hintergrundgrafiken“ aktivieren, damit die Rechenkästchen erscheinen.</p>
+      <div class="tabelle-wrap"><table class="liste" id="tabelle"></table></div>
+    </section>
+  </div>
+
+  <div id="klassenliste" class="klassenliste"></div>
+  <div id="blaetter" class="blaetter"></div>
+
+  <script src="lib/core.js"></script>
+  <script src="lib/qrcode.js"></script>
+  <!-- Kurse: weitere Kursdateien hier ergänzen -->
+  <script src="kurse/einheitenvorsaetze.js"></script>
+  <script src="lehrer.js"></script>
+</body>
+</html>

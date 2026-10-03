@@ -1,0 +1,110 @@
+/* Lehrerwerkzeug und A4-Arbeitsblätter (Schwarz-Weiß-tauglich) */
+
+/* ---------- Bildschirm: Lehreroberfläche ---------- */
+body.lehrer { background: #e9edf2; }
+.lehrer-ui { max-width: 900px; margin: 0 auto; padding: 16px; }
+.lehrer-kopf h1 { margin-bottom: 4px; }
+.lehrer-kopf p { margin-top: 0; color: var(--grau); }
+.lehrer textarea {
+  width: 100%; font: 1rem/1.5 "Consolas", "Courier New", monospace; padding: 10px;
+  border: 2px solid #9aa6b4; border-radius: 10px; resize: vertical;
+}
+.zwei-spalten { display: grid; grid-template-columns: 1fr 1fr; gap: 0 16px; }
+.zeile-knoepfe { display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-end; margin: 10px 0 14px; }
+.feld.inline { margin: 0; }
+.feld.inline input { width: 8em; }
+.feld .auswahl { margin-top: 4px; }
+.datei-btn { display: inline-flex; align-items: center; }
+.datei-btn input { display: none; }
+.hinweis.ok { background: var(--ok-hell); color: var(--ok); }
+.tabelle-wrap { overflow-x: auto; }
+table.liste { border-collapse: collapse; width: 100%; font-size: 0.95rem; }
+table.liste th, table.liste td { border-bottom: 1px solid var(--linie); padding: 6px 8px; text-align: left; }
+table.liste td.link { font-size: 0.8rem; word-break: break-all; }
+.mono { font-family: "Consolas", "Courier New", monospace; letter-spacing: .05em; }
+@media (max-width: 600px) { .zwei-spalten { grid-template-columns: 1fr; } }
+
+/* Vorschau der Blätter am Bildschirm */
+.blaetter { display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 16px 0 40px; }
+.klassenliste { display: none; }
+.blaetter:empty { display: none; }
+
+/* ---------- Das Blatt ---------- */
+.blatt {
+  width: 210mm; height: 297mm; padding: 10mm 12mm 8mm; background: #fff; color: #000;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, .15); display: flex; flex-direction: column;
+  font: 10pt/1.35 Arial, "Helvetica Neue", Helvetica, sans-serif; overflow: hidden; position: relative;
+}
+.blatt sup { font-size: 0.7em; }
+.blatt-kopf { display: flex; gap: 6mm; align-items: flex-start; border-bottom: 0.6mm solid #000; padding-bottom: 2mm; }
+.kopf-links { flex: 1; }
+.blatt-titel { font-size: 15pt; font-weight: 700; }
+.blatt-unter { font-size: 9pt; margin-bottom: 0.5mm; }
+.angaben { border-collapse: collapse; width: 100%; }
+.angaben th { text-align: left; font-weight: 400; font-size: 8.5pt; width: 22mm; padding: 0.8mm 2mm 0.4mm 0; vertical-align: bottom; }
+.angaben td { border-bottom: 0.3mm solid #000; padding: 0.8mm 2mm 0.4mm; font-size: 11pt; vertical-align: bottom; }
+.angaben td.name { font-size: 13pt; font-weight: 700; }
+.angaben td.gross { font-size: 13pt; font-weight: 700; }
+.qr-box { width: 31mm; text-align: center; font-size: 7.5pt; }
+.qr-box svg { width: 31mm; height: 31mm; display: block; }
+.anleitung { font-size: 8.5pt; line-height: 1.3; margin: 1.8mm 0 0.5mm; }
+.anleitung .ohne-qr { display: block; font-size: 7.5pt; color: #333; margin-top: 0.8mm; word-break: break-all; }
+
+.station { border: 0.35mm solid #000; border-radius: 1.5mm; margin-top: 1.8mm; padding: 1.2mm 2.5mm 1.6mm; page-break-inside: avoid; }
+.st-kopf { display: flex; align-items: baseline; gap: 3mm; margin-bottom: 0.6mm; }
+.st-nr { font-weight: 700; background: #000; color: #fff; padding: 0.3mm 2mm; border-radius: 1mm; font-size: 9pt;
+  -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.st-titel { font-weight: 700; flex: 1; }
+.st-haken { font-size: 8pt; }
+.st-aufgabe { font-size: 10.5pt; }
+.st-aufgabe .luecke { display: inline-block; width: 30mm; border-bottom: 0.3mm solid #000; height: 1.1em; vertical-align: bottom; }
+.st-aufgabe .luecke.kurz { width: 8mm; }
+.st-aufgabe .luecke.lang { width: 60mm; }
+.st-platz {
+  margin-top: 1mm; border: 0.2mm solid #999; position: relative;
+  background-image: linear-gradient(#cfcfcf 0.15mm, transparent 0.15mm), linear-gradient(90deg, #cfcfcf 0.15mm, transparent 0.15mm);
+  background-size: 5mm 5mm; -webkit-print-color-adjust: exact; print-color-adjust: exact;
+}
+.st-platz span { position: absolute; left: 1mm; top: 0.3mm; font-size: 7pt; color: #555; background: #fff; padding: 0 1mm; }
+.leiter-blatt { border-collapse: collapse; width: 100%; margin: 1mm 0 1.5mm; table-layout: fixed; }
+.leiter-blatt th { font-size: 8pt; font-weight: 400; text-align: left; width: 16mm; }
+.leiter-blatt td { border: 0.3mm solid #000; height: 6.5mm; text-align: center; font-size: 9pt; }
+.leiter-blatt td.fix { background: #e6e6e6; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+.abschluss { margin-top: auto; border: 0.6mm solid #000; border-radius: 1.5mm; padding: 2mm 3mm; display: flex; align-items: center; gap: 5mm; flex-wrap: wrap; }
+.abschluss-titel { font-weight: 700; font-size: 11pt; }
+.abschluss-titel span { display: block; font-weight: 400; font-size: 7.5pt; }
+.code-kaesten { display: flex; align-items: center; gap: 1.2mm; }
+.code-kaesten span { width: 8.5mm; height: 9.5mm; border: 0.35mm solid #000; display: inline-block; }
+.code-kaesten b { font-size: 14pt; padding: 0 1mm; }
+.kontrolle { font-size: 8.5pt; margin-left: auto; }
+.blatt-fuss { font-size: 7pt; color: #444; text-align: right; margin-top: 1.5mm; }
+
+/* Station „Verbinden“ */
+.verbinden { display: flex; justify-content: space-between; margin: 1.5mm 6mm 0.5mm; }
+.vb-spalte { display: flex; flex-direction: column; justify-content: space-around; gap: 1.2mm; }
+.vb-item { display: flex; align-items: center; gap: 2.5mm; font-size: 10.5pt; min-height: 5.6mm; }
+.vb-spalte.links .vb-item { justify-content: flex-end; }
+.punkt { width: 2.4mm; height: 2.4mm; border-radius: 50%; background: #000; display: inline-block; flex: none;
+  -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+/* Klassenliste */
+.liste-blatt { display: block; }
+.liste-blatt h1 { font-size: 15pt; margin: 0 0 2mm; }
+.liste-blatt table.liste th, .liste-blatt table.liste td { border: 0.3mm solid #000; padding: 2mm; font-size: 10pt; }
+.liste-blatt table.liste td:nth-child(4) { width: 40mm; }
+.liste-blatt table.liste td:nth-child(5) { width: 16mm; }
+.liste-blatt .blatt-fuss { position: absolute; bottom: 8mm; right: 12mm; }
+
+/* ---------- Druck ---------- */
+@page { size: A4 portrait; margin: 0; }
+@media print {
+  html, body, body.lehrer { background: #fff !important; margin: 0; padding: 0; }
+  .no-print { display: none !important; }
+  .blaetter { display: block; padding: 0; gap: 0; }
+  .blatt { box-shadow: none; height: 296.5mm; break-after: page; page-break-after: always; }
+  .blatt:last-child { break-after: auto; page-break-after: auto; }
+  body.druck-liste .blaetter { display: none; }
+  body.druck-liste .klassenliste { display: block; }
+  body.druck-blaetter .klassenliste { display: none; }
+}

@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <meta name="robots" content="noindex">
+  <title>Abschlusscode prüfen</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="app">
+    <main class="karte pruefen">
+      <h1>Abschlusscode prüfen</h1>
+      <label class="feld">Abschlusscode
+        <input id="code" class="code-eingabe" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="XXXX-XXXX" maxlength="12">
+      </label>
+      <label class="feld">Blatt-Nr. auf dem Arbeitsblatt (optional, zum Abgleich)
+        <input id="blatt" inputmode="numeric" autocomplete="off" placeholder="z. B. 017">
+      </label>
+      <button class="btn primaer gross" id="pruefen" type="button">Prüfen</button>
+      <div id="ergebnis" aria-live="polite"></div>
+    </main>
+
+    <details class="karte">
+      <summary><b>Klassenliste laden (optional)</b> – zeigt zur Blatt-Nr. den Namen an</summary>
+      <p class="klein">Die CSV-Liste aus dem Lehrerwerkzeug wird nur in diesem Browser gelesen und nicht gespeichert oder übertragen.</p>
+      <label class="btn datei-btn">CSV-Datei wählen<input id="liste" type="file" accept=".csv,.txt,text/csv,text/plain" hidden></label>
+      <span id="liste-info" class="klein grau"></span>
+    </details>
+  </div>
+
+  <script src="lib/core.js"></script>
+  <script src="lib/abschlusscode.js"></script>
+  <!-- Kurse: weitere Kursdateien hier ergänzen -->
+  <script src="kurse/einheitenvorsaetze.js"></script>
+  <script src="pruefen.js"></script>
+</body>
+</html>
