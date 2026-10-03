@@ -110,6 +110,24 @@ Kurs, Arbeitsblatt-ID, ersten Kompetenzcheck, erfolgreichen Abschlusscheck, Wied
 Aufbau des Codes (40 Bit, Alphabet `23456789ABCDEFGHJKLMNPQRSTUVWXYZ`):
 Blatt-ID (10 Bit) · erster Check in 10er-Schritten (4 Bit) · letzter Check 80/90/100 % (2 Bit) · Wiederholungen 0–31 (5 Bit) · Zufallsanteil 0–9999 (14 Bit, `crypto.getRandomValues`) · Prüfsumme (5 Bit). Alles wird kursabhängig verwürfelt. Der Code ist ein Plausibilitätsnachweis, keine kryptografische Signatur: Wer den Quelltext kennt, könnte Codes nachbauen.
 
+## Layout der Arbeitsblätter und Versionen
+
+Im Lehrerwerkzeug gibt es die Auswahl **Layout der Arbeitsblätter**:
+
+- **Elektrotechnik-Arbeitsblatt (neu)** ist angelehnt an die übrigen Elektrotechnik-Arbeitsblätter: Kopf mit „Elektrotechnik“ und Titel, rechts Name, Klasse und Datum, blaues Seitenregister am rechten Rand, Lochmarke links und Fußzeile „erstellt von … | Seite 1“.
+- **Klassisch (bisherige Variante)** ist das ursprüngliche Layout.
+
+Die Auswahl wird im Browser gemerkt.
+
+Zusätzlich sind die Stände in Git markiert:
+
+| Markierung (Tag) | Inhalt |
+|---|---|
+| `blatt-v1-klassisch` | Stand vor der Layout-Anpassung |
+| `blatt-v2-elektrotechnik` | Stand mit beiden Layouts (Standard: Elektrotechnik) |
+
+Ältere Stände ansehen oder wiederherstellen: auf GitHub unter *Tags*, oder lokal mit `git checkout blatt-v1-klassisch`.
+
 ## Passwortschutz der Lehrerseiten
 
 `lehrer.html` und `pruefen.html` fragen beim Öffnen nach einem Passwort. Die Freigabe gilt, bis der Browser-Tab geschlossen wird.

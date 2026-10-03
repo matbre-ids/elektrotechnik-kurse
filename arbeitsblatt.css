@@ -96,6 +96,38 @@ table.liste td.link { font-size: 0.8rem; word-break: break-all; }
 .punkt { width: 2.4mm; height: 2.4mm; border-radius: 50%; background: #000; display: inline-block; flex: none;
   -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 
+/* ---------- Layout „Elektrotechnik“ (angelehnt an die Elektrotechnik-Arbeitsblätter) ---------- */
+.blatt.et { padding: 7mm 20mm 6mm 20mm; }
+.et .lochmarke { position: absolute; left: 2.5mm; top: 148.5mm; width: 6mm; border-top: 0.3mm solid #000; }
+.et .register {
+  position: absolute; right: 0; top: 135mm; width: 8.6mm; height: 96mm; background: rgb(30, 90, 160);
+  display: flex; align-items: center; justify-content: center;
+  -webkit-print-color-adjust: exact; print-color-adjust: exact;
+}
+.et .register span {
+  writing-mode: vertical-rl; transform: rotate(180deg); color: #fff; white-space: nowrap;
+  font: 700 10.5pt/1 "Segoe UI", "Open Sans", Arial, sans-serif; letter-spacing: 0.06em;
+}
+.et-kopf { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 0.3mm solid #000; padding-bottom: 1.2mm; }
+.et-fach { font-style: italic; font-size: 9pt; }
+.et-titel { font-weight: 700; font-size: 12pt; margin-top: 0.8mm; }
+.et-unter { font-size: 8.5pt; margin-top: 0.8mm; }
+.et-angaben { border-collapse: collapse; }
+.et-angaben th { font-weight: 400; font-size: 9pt; text-align: left; padding: 0.6mm 3mm 0.3mm 0; vertical-align: bottom; }
+.et-angaben td { width: 55mm; border-bottom: 0.25mm solid #000; font-size: 10pt; padding: 0.6mm 1mm 0.3mm; height: 5mm; vertical-align: bottom; }
+.et-angaben td.name { font-weight: 700; font-size: 11pt; }
+.et-start { display: flex; gap: 5mm; align-items: center; margin-top: 2mm; }
+.et-start-text { flex: 1; font-size: 8.8pt; line-height: 1.3; }
+.et-zugang { font-size: 10pt; margin-top: 1.5mm; }
+.et-zugang b { font-size: 11.5pt; }
+.et .ohne-qr { font-size: 7.5pt; color: #333; margin-top: 0.8mm; word-break: break-all; }
+.et .qr-box { width: 27mm; }
+.et .qr-box svg { width: 27mm; height: 27mm; }
+.et .st-nr { background: none; color: #000; padding: 0; border-radius: 0; font-size: 10.5pt; }
+.et .st-nr::after { content: " –"; }
+.et .st-titel { font-size: 10.5pt; }
+.et-fuss { display: flex; justify-content: space-between; border-top: 0.3mm solid #000; margin-top: 1.5mm; padding-top: 1mm; font-size: 8pt; }
+
 /* Klassenliste */
 .liste-blatt { display: block; }
 .liste-blatt h1 { font-size: 15pt; margin: 0 0 2mm; }

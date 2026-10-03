@@ -46,6 +46,15 @@
   $('basis').addEventListener('input', function () { merke('basis', $('basis').value.trim()); basisPruefen(); });
   basisPruefen();
 
+  if (hole('layout')) $('layout').value = hole('layout');
+  $('layout').addEventListener('change', function () {
+    merke('layout', $('layout').value);
+    if (schueler.length) {
+      var k = kurs(), basis = $('basis').value.trim();
+      $('blaetter').innerHTML = schueler.map(function (s) { return blattHTML(k, s, basis); }).join('');
+    }
+  });
+
   $('klasse').value = hole('klasse') || '';
   $('klasse').addEventListener('input', function () { merke('klasse', $('klasse').value); });
 
@@ -118,9 +127,9 @@
       '</div></div>';
   }
 
-  function blattHTML(k, s, basis) {
-    var url = ET.kursUrl(basis, k, s.id, s.seed);
-    var stationen = k.papier.map(function (p) {
+  /* Gemeinsame Teile beider Layouts */
+  function stationenHTML(k, s) {
+    return k.papier.map(function (p) {
       var t = ET.paperTask(k, s.seed, p);
       return '<div class="station">' +
         '<div class="st-kopf"><span class="st-nr">Station ' + p.nr + '</span><span class="st-titel">' + ET.esc(p.titel) + '</span><span class="st-haken">☐ am Bildschirm eingegeben</span></div>' +
@@ -128,6 +137,47 @@
         (p.platz ? '<div class="st-platz" style="height:' + p.platz + 'mm"><span>Rechenweg</span></div>' : '') +
         '</div>';
     }).join('');
+  }
+  function schlussHTML() {
+    return '<div class="feedback-box">' +
+      '<div class="fb-zeile"><b>Feedback zum Kurs:</b> Wie hilfreich war der Kurs? <span class="fb-skala">gar nicht <span class="kasten">1</span><span class="kasten">2</span><span class="kasten">3</span><span class="kasten">4</span><span class="kasten">5</span> sehr</span></div>' +
+      '<div class="fb-zeile">Was war gut, was sollte verbessert werden? <span class="fb-linie"></span></div>' +
+      '<div class="fb-zeile"><span class="fb-linie"></span></div></div>' +
+      '<div class="abschluss">' +
+      '<div class="abschluss-titel">Abschlusscode<span>(vom grünen Abschlussbildschirm übertragen)</span></div>' +
+      '<div class="code-kaesten">' + '<span></span><span></span><span></span><span></span><b>–</b><span></span><span></span><span></span><span></span>' + '</div>' +
+      '<div class="kontrolle">Kontrolle Lehrkraft: ________</div>' +
+      '</div>';
+  }
+  var ANLEITUNG = '<b>So geht es:</b> QR-Code scannen und den Kurs bearbeiten. An jeder <b>Papierstation</b> rechnest du hier <b>vollständig</b> ' +
+    '(Umrechnung, Zwischenschritte, Ergebnis mit Einheit) und gibst am Bildschirm nur das Ergebnis ein. Das Blatt wird am Ende abgegeben.';
+
+  /* Layout „Elektrotechnik“ – angelehnt an die Elektrotechnik-Arbeitsblätter (Kopf, Seitenregister, Fußzeile) */
+  function blattET(k, s, basis) {
+    var url = ET.kursUrl(basis, k, s.id, s.seed);
+    return '<section class="blatt et">' +
+      '<div class="lochmarke"></div>' +
+      '<div class="register"><span>' + ET.esc(k.kurztitel.toUpperCase()) + '</span></div>' +
+      '<header class="et-kopf">' +
+      '<div class="et-links"><div class="et-fach">Elektrotechnik</div><div class="et-titel">' + ET.esc(k.kurztitel) + '</div>' +
+      '<div class="et-unter">E-Learning-Begleitblatt mit Papierstationen</div></div>' +
+      '<table class="et-angaben">' +
+      '<tr><th>Name:</th><td class="name">' + ET.esc(s.name) + '</td></tr>' +
+      '<tr><th>Klasse:</th><td>' + ET.esc($('klasse').value.trim()) + '</td></tr>' +
+      '<tr><th>Datum:</th><td>' + datumText() + '</td></tr>' +
+      '</table></header>' +
+      '<div class="et-start"><div class="et-start-text">' + ANLEITUNG +
+      '<div class="et-zugang">Blatt-Nr. <b>' + ET.pad3(s.id) + '</b> &nbsp;·&nbsp; Zugangscode <b class="mono">' + s.seed + '</b></div>' +
+      '<div class="ohne-qr">Ohne QR-Code: ' + ET.esc(basis) + ' öffnen, Blatt-Nr. und Zugangscode eingeben.</div></div>' +
+      '<div class="qr-box">' + QR.svg(url, { ecl: 'M' }) + '<div>Scannen &amp; starten</div></div></div>' +
+      stationenHTML(k, s) + schlussHTML() +
+      '<footer class="et-fuss"><span>erstellt von ' + ET.esc(k.autor || '') + ' &nbsp;|&nbsp; 📄 ' + ET.esc(k.kurztitel) + '-Begleitblatt – Blatt ' + ET.pad3(s.id) + '</span><span>Seite 1</span></footer>' +
+      '</section>';
+  }
+
+  /* Layout „Klassisch“ – ursprüngliche Variante (Version blatt-v1-klassisch) */
+  function blattKlassisch(k, s, basis) {
+    var url = ET.kursUrl(basis, k, s.id, s.seed);
     return '<section class="blatt">' +
       '<header class="blatt-kopf">' +
       '<div class="kopf-links">' +
@@ -140,21 +190,15 @@
       '</table></div>' +
       '<div class="qr-box">' + QR.svg(url, { ecl: 'M' }) + '<div>Scannen &amp; starten</div></div>' +
       '</header>' +
-      '<div class="anleitung"><b>So geht es:</b> QR-Code scannen und den Kurs bearbeiten. An jeder <b>Papierstation</b> rechnest du hier <b>vollständig</b> ' +
-      '(Umrechnung, Zwischenschritte, Ergebnis mit Einheit) und gibst am Bildschirm nur das Ergebnis ein. Das Blatt wird am Ende abgegeben.' +
+      '<div class="anleitung">' + ANLEITUNG +
       '<span class="ohne-qr">Ohne QR-Code: ' + ET.esc(basis) + ' öffnen, Blatt-Nr. und Zugangscode eingeben.</span></div>' +
-      stationen +
-      '<div class="feedback-box">' +
-      '<div class="fb-zeile"><b>Feedback zum Kurs:</b> Wie hilfreich war der Kurs? <span class="fb-skala">gar nicht <span class="kasten">1</span><span class="kasten">2</span><span class="kasten">3</span><span class="kasten">4</span><span class="kasten">5</span> sehr</span></div>' +
-      '<div class="fb-zeile">Was war gut, was sollte verbessert werden? <span class="fb-linie"></span></div>' +
-      '<div class="fb-zeile"><span class="fb-linie"></span></div></div>' +
-      '<div class="abschluss">' +
-      '<div class="abschluss-titel">Abschlusscode<span>(vom grünen Abschlussbildschirm übertragen)</span></div>' +
-      '<div class="code-kaesten">' + '<span></span><span></span><span></span><span></span><b>–</b><span></span><span></span><span></span><span></span>' + '</div>' +
-      '<div class="kontrolle">Kontrolle Lehrkraft: ________</div>' +
-      '</div>' +
+      stationenHTML(k, s) + schlussHTML() +
       '<footer class="blatt-fuss">erstellt von ' + ET.esc(k.autor || '') + ' | 📄 ' + ET.esc(k.kurztitel) + ' – Blatt ' + ET.pad3(s.id) + '</footer>' +
       '</section>';
+  }
+
+  function blattHTML(k, s, basis) {
+    return $('layout').value === 'klassisch' ? blattKlassisch(k, s, basis) : blattET(k, s, basis);
   }
 
   function klassenlisteHTML(k) {
