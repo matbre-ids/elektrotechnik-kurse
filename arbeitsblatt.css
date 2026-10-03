@@ -100,7 +100,7 @@ table.liste td.link { font-size: 0.8rem; word-break: break-all; }
 .blatt.et { padding: 7mm 20mm 6mm 20mm; }
 .et .lochmarke { position: absolute; left: 2.5mm; top: 148.5mm; width: 6mm; border-top: 0.3mm solid #000; }
 .et .register {
-  position: absolute; right: 0; top: 135mm; width: 8.6mm; height: 96mm; background: rgb(30, 90, 160);
+  position: absolute; right: 4mm; top: 135mm; width: 8.6mm; height: 96mm; background: rgb(30, 90, 160);
   display: flex; align-items: center; justify-content: center;
   -webkit-print-color-adjust: exact; print-color-adjust: exact;
 }
